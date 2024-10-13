@@ -1,0 +1,6 @@
+package com.test.ganggod.constData
+
+object Token {
+    const val TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjY5MDUwMzksInBhc3N3b3JkIjoiMDcwNDY3YTI2Yzg0NDZmNWU1YzQ2OGM0MmI1NTM2NjBkYTlhZGFjYzE3NDAyOWVhYjAxZGI3ODRmZWIyYzAxZSIsInVzZXJuYW1lIjoia290YWhpIn0.CERHjS9BcM4yVdqRtc4RLFJ6x7-d03pKgq5S35GNlK0"
+
+}
