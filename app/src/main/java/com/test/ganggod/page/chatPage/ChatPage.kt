@@ -27,6 +27,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,7 +50,15 @@ import com.test.ganggod.R
 import kotlinx.coroutines.launch
 
 @Composable
-fun ChatPage(navHostController: NavHostController,model:String,chatId:Int,chatPageViewModel: ChatPageViewModel = hiltViewModel()) {
+fun ChatPage(
+    navHostController: NavHostController,
+    chatId: Int,
+    chatPageViewModel: ChatPageViewModel = hiltViewModel()
+) {
+    LaunchedEffect(true) {
+        chatPageViewModel.initChatRecord(chatId)
+    }
+    chatPageViewModel.getChatId(chatId)
     var currentMessage by remember { mutableStateOf(TextFieldValue("")) }
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()

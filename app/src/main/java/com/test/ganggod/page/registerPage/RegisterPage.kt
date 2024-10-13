@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.test.ganggod.navigation.Screen
 import com.test.ganggod.network.register.RegisterRequest
 import com.test.ganggod.page.loginPage.LoginViewModel
 import com.test.ganggod.ui.theme.LightModeColor
@@ -40,6 +42,16 @@ fun RegisterPage(navHostController: NavHostController,registerViewModel: Registe
     val registerSuccess by registerViewModel.registerSuccess.collectAsState()
     val showDialog by registerViewModel.showDialog.collectAsState()
     val errorMessage by registerViewModel.error.collectAsState()
+    LaunchedEffect(registerSuccess) {
+        if (registerSuccess)
+        {
+            navHostController.navigate(Screen.RecordPage.route){
+                popUpTo(Screen.RegisterPage.route){
+                    inclusive = true
+                }
+            }
+        }
+    }
 
     if (showDialog) {
         AlertDialog(

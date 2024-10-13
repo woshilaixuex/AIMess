@@ -54,12 +54,11 @@ fun NavigationGraph(
                 LotteryPage()
             }
             composable(
-                route = Screen.ChatPage.route + "/{model}" + "/{id}",
-                arguments = listOf(navArgument("model") { type = NavType.StringType }, navArgument("id"){type = NavType.IntType})
+                route = Screen.ChatPage.route + "/{id}",
+                arguments = listOf(navArgument("id"){type = NavType.IntType})
             ) {
-                val model = it.arguments?.getString("model") ?: "GPT-4o"
-                val chatId = it.arguments?.getInt("id")?:0
-                ChatPage(navHostController, model,chatId)
+                val chatId = it.arguments?.getInt("id")?:1
+                ChatPage(navHostController, chatId)
             }
             composable(Screen.LoginPage.route){
                 LoginPage(navHostController)

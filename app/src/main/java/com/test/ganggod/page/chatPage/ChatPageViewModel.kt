@@ -41,7 +41,7 @@ class ChatPageViewModel @Inject constructor(
     private val _dialogContent = MutableStateFlow("")
     val dialogContent = _dialogContent.asStateFlow()
 
-    private val _currentModel = MutableStateFlow("")
+    private val _currentModel = MutableStateFlow("gpt-4")
     val currentModel = _currentModel.asStateFlow()
 
     //当前聊天记录id
@@ -62,19 +62,23 @@ class ChatPageViewModel @Inject constructor(
     fun changeModel(model: String) {
         _currentModel.value = model
     }
-
+    // 初始化执行
     init {
         initialWebSocket()
-        initChatRecord()
+    }
+
+    fun getChatId(id:Int)
+    {
+        _chatId.value = id
     }
 
 
-    private fun initChatRecord() {
+    fun initChatRecord(chatId:Int) {
         Log.d("TAG", "initChatRecord: ${_chatId.value}")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    val chatRecord = chatHistoryDao.getChatHistoryById(_chatId.value,UserData.userId)
+                    val chatRecord = chatHistoryDao.getChatHistoryById(chatId,UserData.userId)
                     if (chatRecord == null){
                         newChat = true
                     }
@@ -92,7 +96,7 @@ class ChatPageViewModel @Inject constructor(
     private fun reconnect() {
         initialWebSocket()
     }
-
+    // 初始化websocket链接
     private fun initialWebSocket() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -170,11 +174,11 @@ class ChatPageViewModel @Inject constructor(
     private fun updateChatHistory() {
         val chatList = _chatList.value
         Log.d("TAG", "-------------chatlist: $chatList")
-        val chatMessage = chatList.map { message ->
-            Log.d("TAG", "updateChatHistory: $message,${_currentModel.value}")
-            ChatMessage(message.content, message.role)
-        }
-        Log.d("TAG", "-------------: $chatMessage")
+//        val chatMessage = chatList.map { message ->
+//            Log.d("TAG", "updateChatHistory: $message,${_currentModel.value}")
+//            ChatMessage(message.content, message.role)
+//        }
+//        Log.d("TAG", "-------------: $chatMessage")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
@@ -184,13 +188,14 @@ class ChatPageViewModel @Inject constructor(
                                 id = 0,
                                 userId = UserData.userId,
                                 model = _currentModel.value,
-                                content = chatMessage
+                                content = chatList
                             )
                         )
                         newChat = false
+                        _chatId.value = chatHistoryDao.getChatHistorySize(userId = UserData.userId)
                     }
                     else
-                        chatHistoryDao.updateChatHistory(_chatId.value, UserData.userId,chatMessage)
+                        chatHistoryDao.updateChatHistory(_chatId.value, UserData.userId,chatList)
                 } catch (e: Exception) {
                     Log.d("database", "updateChatHistory: ${e.message}")
                 }

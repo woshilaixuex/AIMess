@@ -63,7 +63,9 @@ fun RecordPage(
                 items(list.size) { index ->
                     Log.d("TAG", "Rendering item at index $index")
                     ChatRecordItem(list[index]) {
-                        navHostController.navigate(Screen.ChatPage.route + "/${list[index].model + "/${it}"}")
+                        Log.d("TAG", "RecordPage: ${Screen.ChatPage.route + "/${"/${it}"}"}")
+                        hideNavBar()
+                        navHostController.navigate(Screen.ChatPage.route + "/${"$it"}")
                     }
                 }
             } else {
@@ -73,7 +75,11 @@ fun RecordPage(
         Button(
             onClick = {
                 hideNavBar()
-                navHostController.navigate(Screen.ModelPage.route)
+                navHostController.navigate(Screen.ModelPage.route){
+                    popUpTo(Screen.ChatPage.route){
+                        inclusive = true
+                    }
+                }
             }, modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)

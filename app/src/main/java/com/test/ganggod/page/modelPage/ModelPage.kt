@@ -57,7 +57,7 @@ fun ModelPage(navHostController: NavHostController) {
         LazyColumn (modifier = Modifier.weight(1f)){
             items(ModelList.modelStore.size) {
                 ModelListItem(it){model->
-                    navHostController.navigate(Screen.ChatPage.route+"/$model"+"/-1"){
+                    navHostController.navigate(Screen.ChatPage.route+"/-1"){
 
                     }
                 }

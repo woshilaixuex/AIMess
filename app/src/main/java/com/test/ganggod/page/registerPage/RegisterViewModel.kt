@@ -26,6 +26,7 @@ class RegisterViewModel @Inject constructor(
     private val _error = MutableStateFlow("")
     val error = _error.asStateFlow()
 
+
     fun register(username:String,email:String,password:String){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
